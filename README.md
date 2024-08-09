@@ -1,2 +1,2 @@
 # snake_game
-pygame snake game project
+simple pygame snake game project

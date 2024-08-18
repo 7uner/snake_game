@@ -21,7 +21,7 @@ class SnakeGame:
         self.clock = pygame.time.Clock()
 
         # Snake settings
-        self.snake_pos = [[100, 50], [80, 50], [60, 50]]
+        self.snake_pos = [[100, 60], [80, 60], [60, 60]]
         self.snake_direction = 'RIGHT'
         self.change_to = self.snake_direction
 
@@ -50,6 +50,15 @@ class SnakeGame:
 
     def draw_food(self):
         pygame.draw.rect(self.win, self.RED, pygame.Rect(self.food_pos[0], self.food_pos[1], self.SNAKE_SIZE, self.SNAKE_SIZE))
+
+    # draw a grid to help us validate movement, can keep or remove
+    def draw_grid(self):
+        for i in range(self.WIDTH // self.SNAKE_SIZE):
+            pygame.draw.line(self.win, self.WHITE, (i * self.SNAKE_SIZE, 0),
+                             (i * self.SNAKE_SIZE, self.HEIGHT))
+        for i in range(self.HEIGHT // self.SNAKE_SIZE):
+            pygame.draw.line(self.win, self.WHITE, (0, i * self.SNAKE_SIZE),
+                             (self.WIDTH, i * self.SNAKE_SIZE))
 
     def run(self):
         while True:
@@ -93,6 +102,7 @@ class SnakeGame:
 
             # Snake body growing mechanism
             self.snake_pos.insert(0, list(self.snake_pos[0]))
+            # this line needs a fix, we cannot check for exact food xy position match
             if self.snake_pos[0] == self.food_pos:
                 self.score += 1
                 self.food_spawn = False
@@ -103,8 +113,13 @@ class SnakeGame:
                 self.food_pos = self.random_food_position()
             self.food_spawn = True
 
+            # testing
+            print(self.snake_pos[0])
             # Fill background
             self.win.fill(self.BLACK)
+
+            # draw grid
+            self.draw_grid()
 
             # Draw snake
             self.draw_snake()
@@ -112,15 +127,17 @@ class SnakeGame:
             # Draw food
             self.draw_food()
 
-            # Game Over conditions
-            if self.snake_pos[0][0] < 0 or self.snake_pos[0][0] > (self.WIDTH - self.SNAKE_SIZE):
-                self.game_over()
-            if self.snake_pos[0][1] < 0 or self.snake_pos[0][1] > (self.HEIGHT - self.SNAKE_SIZE):
-                self.game_over()
+            # currently the game ending conditions is bugged
 
-            for block in self.snake_pos[1:]:
-                if self.snake_pos[0] == block:
-                    self.game_over()
+            # Game Over conditions
+            # if self.snake_pos[0][0] < 0 or self.snake_pos[0][0] > (self.WIDTH - self.SNAKE_SIZE):
+            #     self.game_over()
+            # if self.snake_pos[0][1] < 0 or self.snake_pos[0][1] > (self.HEIGHT - self.SNAKE_SIZE):
+            #     self.game_over()
+            #
+            # for block in self.snake_pos[1:]:
+            #     if self.snake_pos[0] == block:
+            #         self.game_over()
 
             # Refresh game screen
             pygame.display.update()

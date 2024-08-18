@@ -15,8 +15,7 @@ HEIGHT = 600
 
 # Snake settings
 SNAKE_SIZE = 20
-SPEED = 15
-
+SPEED = 20
 colors = (WHITE, BLACK, RED, GREEN)
 
 if __name__ == "__main__":

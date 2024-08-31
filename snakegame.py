@@ -17,31 +17,23 @@ class Snake:
         for event in events:
             if event.type == pygame.KEYDOWN:
                 if player == 1:
-                    if event.key == pygame.K_UP:
-                        if self.change_to != 'DOWN':
-                            self.change_to = 'UP'
-                    elif event.key == pygame.K_DOWN:
-                        if self.change_to != 'UP':
-                            self.change_to = 'DOWN'
-                    elif event.key == pygame.K_LEFT:
-                        if self.change_to != 'RIGHT':
-                            self.change_to = 'LEFT'
-                    elif event.key == pygame.K_RIGHT:
-                        if self.change_to != 'LEFT':
-                            self.change_to = 'RIGHT'
+                    if event.key == pygame.K_UP and self.snake_direction != 'DOWN':
+                        self.change_to = 'UP'
+                    elif event.key == pygame.K_DOWN and self.snake_direction != 'UP':
+                        self.change_to = 'DOWN'
+                    elif event.key == pygame.K_LEFT and self.snake_direction != 'RIGHT':
+                        self.change_to = 'LEFT'
+                    elif event.key == pygame.K_RIGHT and self.snake_direction != 'LEFT':
+                        self.change_to = 'RIGHT'
                 elif player == 2:
-                    if event.key == pygame.K_w:
-                        if self.change_to != 'DOWN':
-                            self.change_to = 'UP'
-                    elif event.key == pygame.K_s:
-                        if self.change_to != 'UP':
-                            self.change_to = 'DOWN'
-                    elif event.key == pygame.K_a:
-                        if self.change_to != 'RIGHT':
-                            self.change_to = 'LEFT'
-                    elif event.key == pygame.K_d:
-                        if self.change_to != 'LEFT':
-                            self.change_to = 'RIGHT'
+                    if event.key == pygame.K_w and self.snake_direction != 'DOWN':
+                        self.change_to = 'UP'
+                    elif event.key == pygame.K_s and self.snake_direction != 'UP':
+                        self.change_to = 'DOWN'
+                    elif event.key == pygame.K_a and self.snake_direction != 'RIGHT':
+                        self.change_to = 'LEFT'
+                    elif event.key == pygame.K_d and self.snake_direction != 'LEFT':
+                        self.change_to = 'RIGHT'
 
     def move_snake(self):
         if self.change_to == 'UP':

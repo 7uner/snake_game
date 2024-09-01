@@ -2,64 +2,7 @@ import pygame
 import random
 import time
 import sys
-
-class Snake:
-    def __init__(self, win, color, snake_size=20, speed=15, start_pos=[[100, 60], [80, 60], [60, 60]], direction='RIGHT'):
-        self.win = win
-        self.color = color
-        self.SNAKE_SIZE = snake_size
-        self.speed = speed
-        self.snake_pos = start_pos
-        self.snake_direction = direction
-        self.change_to = self.snake_direction
-
-    def direction_event_handler(self, events, player=1):
-        for event in events:
-            if event.type == pygame.KEYDOWN:
-                if player == 1:
-                    if event.key == pygame.K_UP and self.snake_direction != 'DOWN':
-                        self.change_to = 'UP'
-                    elif event.key == pygame.K_DOWN and self.snake_direction != 'UP':
-                        self.change_to = 'DOWN'
-                    elif event.key == pygame.K_LEFT and self.snake_direction != 'RIGHT':
-                        self.change_to = 'LEFT'
-                    elif event.key == pygame.K_RIGHT and self.snake_direction != 'LEFT':
-                        self.change_to = 'RIGHT'
-                elif player == 2:
-                    if event.key == pygame.K_w and self.snake_direction != 'DOWN':
-                        self.change_to = 'UP'
-                    elif event.key == pygame.K_s and self.snake_direction != 'UP':
-                        self.change_to = 'DOWN'
-                    elif event.key == pygame.K_a and self.snake_direction != 'RIGHT':
-                        self.change_to = 'LEFT'
-                    elif event.key == pygame.K_d and self.snake_direction != 'LEFT':
-                        self.change_to = 'RIGHT'
-
-    def move_snake(self):
-        if self.change_to == 'UP':
-            self.snake_direction = 'UP'
-        if self.change_to == 'DOWN':
-            self.snake_direction = 'DOWN'
-        if self.change_to == 'LEFT':
-            self.snake_direction = 'LEFT'
-        if self.change_to == 'RIGHT':
-            self.snake_direction = 'RIGHT'
-
-        new_head = list(self.snake_pos[0])
-        if self.snake_direction == 'UP':
-            new_head[1] -= self.SNAKE_SIZE
-        if self.snake_direction == 'DOWN':
-            new_head[1] += self.SNAKE_SIZE
-        if self.snake_direction == 'LEFT':
-            new_head[0] -= self.SNAKE_SIZE
-        if self.snake_direction == 'RIGHT':
-            new_head[0] += self.SNAKE_SIZE
-
-        self.snake_pos.insert(0, new_head)
-
-    def draw_snake(self):
-        for pos in self.snake_pos:
-            pygame.draw.rect(self.win, self.color, pygame.Rect(pos[0], pos[1], self.SNAKE_SIZE, self.SNAKE_SIZE))
+import snake
 
 
 class SnakeGame:
@@ -68,6 +11,7 @@ class SnakeGame:
         self.HEIGHT = height
         self.score1 = 0
         self.score2 = 0
+        self.speed = speed
 
         self.WHITE, self.BLACK, self.RED, self.GREEN, self.BLUE = colors
 
@@ -104,8 +48,8 @@ class SnakeGame:
             pygame.draw.line(self.win, self.WHITE, (0, i * SNAKE_SIZE), (self.WIDTH, i * SNAKE_SIZE))
 
     def run(self):
-        snake1 = Snake(self.win, self.GREEN)
-        snake2 = Snake(self.win, self.BLUE, start_pos=[[300, 300], [280, 300], [260, 300]], direction='LEFT')
+        snake1 = snake.Snake(self.win, self.GREEN, [[680, 60], [700, 60], [720, 60]], 'LEFT')
+        snake2 = snake.Snake(self.win, self.BLUE, [[100, 60], [80, 60], [60, 60]], 'RIGHT')
 
         while True:
             events = pygame.event.get()
@@ -114,8 +58,8 @@ class SnakeGame:
                     pygame.quit()
                     sys.exit()
 
-            snake1.direction_event_handler(events, player=1)
-            snake2.direction_event_handler(events, player=2)
+            snake1.direction_event_handler(events, 1)
+            snake2.direction_event_handler(events, 2)
 
             snake1.move_snake()
             snake2.move_snake()
@@ -138,7 +82,8 @@ class SnakeGame:
 
             self.win.fill(self.BLACK)
 
-            self.draw_grid()
+            # function for drawing the grid, can remove for final version
+            # self.draw_grid()
             snake1.draw_snake()
             snake2.draw_snake()
             self.draw_food(20)
@@ -158,4 +103,4 @@ class SnakeGame:
                     self.game_over()
 
             pygame.display.update()
-            self.clock.tick(snake1.speed)
+            self.clock.tick(self.speed)

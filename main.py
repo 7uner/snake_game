@@ -1,6 +1,3 @@
-import pygame
-import random
-import time
 from snakegame import SnakeGame
 
 # Define colors
